@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleHelp, LogOut, Moon, Settings, Sun, User } from "lucide-react";
+import { ArrowLeft, CircleHelp, LogOut, Moon, Settings, Sun, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useState } from "react";
@@ -47,7 +47,10 @@ export function UserMenu() {
             </AlertDialogDescription>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogCancel className="gap-2 border-0 shadow-none bg-transparent hover:bg-transparent p-0 h-auto text-sm font-medium">
+                <ArrowLeft className="h-4 w-4" />
+                Batal
+              </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500 hover:bg-red-600 text-white"
               onClick={handleLogout}
