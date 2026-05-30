@@ -2,7 +2,7 @@
 
 import { Menu, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -15,9 +15,30 @@ import { UserMenu } from "./user-menu";
 
 // ─── AppNavbar ────────────────────────────────────────────────────────────────
 
+function useDateNow() {
+  const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    function format() {
+      return new Date().toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
+    setLabel(format());
+    const id = setInterval(() => setLabel(format()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  return label;
+}
+
 export function AppNavbar() {
   const { toggle, mobileOpen, setMobileOpen } = useSidebar();
   const [query, setQuery] = useState("");
+  const dateLabel = useDateNow();
 
   const allItems: NavItem[] = [...primaryNav, ...navGroups.flatMap((g) => g.items), ...bottomNav];
 
@@ -67,8 +88,10 @@ export function AppNavbar() {
           <span className="hidden sm:inline">AdminPanel</span>
         </Link>
 
-        {/* Right actions */}
-        <div className="flex-1" />
+        {/* Date */}
+        <div className="flex-1 flex justify-end pr-3">
+          {dateLabel && <span className="hidden sm:block text-sm text-white/60">{dateLabel}</span>}
+        </div>
         <div className="flex items-center gap-3 shrink-0">
           <NotificationMenu />
           <UserMenu />

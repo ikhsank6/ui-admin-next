@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AdminPanel — Template Dashboard
 
-## Getting Started
+Template admin dashboard modern berbasis Next.js dengan UI yang bersih, responsif, dan mendukung dark mode.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+
+### Core
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Next.js](https://nextjs.org) | 16 | App Router, React Server Components |
+| [React](https://react.dev) | 19 | UI library |
+| [TypeScript](https://www.typescriptlang.org) | 5 | Static typing |
+
+### Styling
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Tailwind CSS](https://tailwindcss.com) | 4 | CSS-first config via `@theme inline` |
+| [clsx](https://github.com/lukeed/clsx) + [tailwind-merge](https://github.com/dcastil/tailwind-merge) | — | Utility `cn()` untuk conditional classes |
+
+### UI Components
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Radix UI](https://www.radix-ui.com) | 1 | Headless primitif aksesibel |
+| [shadcn/ui](https://ui.shadcn.com) | — | Komponen siap pakai berbasis Radix |
+| [Lucide React](https://lucide.dev) | — | Icon set |
+| [Framer Motion](https://www.framer.com/motion) | 12 | Animasi (breadcrumb, transisi) |
+
+### Form & Validasi
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [React Hook Form](https://react-hook-form.com) | 7 | Manajemen form |
+| [Zod](https://zod.dev) | 4 | Schema validasi |
+| [@hookform/resolvers](https://github.com/react-hook-form/resolvers) | 5 | Integrasi Zod + RHF |
+
+### State & Data
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Zustand](https://zustand-demo.pmnd.rs) | 5 | Global state management |
+| [Highcharts](https://www.highcharts.com) | 12 | Chart & visualisasi data |
+| [Sonner](https://sonner.emilkowal.ski) | 2 | Toast notifications |
+
+### Developer Tools
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Biome](https://biomejs.dev) | 2 | Linter + formatter (pengganti ESLint + Prettier) |
+| [pnpm](https://pnpm.io) | — | Package manager |
+
+---
+
+## Struktur Folder
+
+```
+src/
+├── app/          # Next.js App Router — halaman dan layout
+├── components/
+│   ├── ui/       # Primitif shadcn/ui
+│   ├── shared/   # Komponen reusable (DataTable, FormSheet, ContentCard, dll)
+│   └── layout/   # Shell aplikasi (Navbar, Sidebar, UserMenu)
+├── hooks/        # Custom React hooks
+├── lib/          # Konfigurasi library & API
+├── stores/       # Zustand stores
+├── services/     # API call per domain
+├── assets/       # Asset lokal (gambar, font, data statis)
+└── utils/        # Pure helper (cn, nav-config, seo, dll)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cara Menjalankan
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prasyarat
+- [Node.js](https://nodejs.org) >= 18
+- [pnpm](https://pnpm.io) >= 8
 
-## Learn More
+```bash
+# Install pnpm jika belum ada
+npm install -g pnpm
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# 1. Install dependencies
+pnpm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 2. Jalankan dev server
+pnpm dev
+```
 
-## Deploy on Vercel
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Build Production
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Build
+pnpm build
+
+# Jalankan production server
+pnpm start
+```
+
+### Perintah Lain
+
+```bash
+# Cek linting
+pnpm lint
+
+# Format kode
+pnpm format
+
+# Type check
+pnpm typecheck
+```
+
+---
+
+## Kredensial Demo
+
+| Field | Value |
+|---|---|
+| Email | `admin@example.com` |
+| Password | `password` |
