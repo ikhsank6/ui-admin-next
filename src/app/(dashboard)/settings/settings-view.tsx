@@ -98,7 +98,12 @@ export function SettingsView() {
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <PageBreadcrumb items={[{ label: "Beranda", href: "/dashboard" }, { label: "Pengaturan" }]} />
+      <PageBreadcrumb
+        items={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Profil Saya", href: "/settings" },
+        ]}
+      />
 
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Pengaturan Profil</h1>

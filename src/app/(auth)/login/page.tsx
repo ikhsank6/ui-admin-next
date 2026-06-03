@@ -1,10 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Moon, Sun } from "lucide-react";
+import { Eye, EyeOff, Gem, Moon, Sun } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -20,13 +20,13 @@ import {
 import { Input } from "@/components/ui/input";
 
 const loginSchema = z.object({
-  email: z.string().email("Email tidak valid"),
+  email: z.string().pipe(z.email("Email tidak valid")),
   password: z.string().min(6, "Password minimal 6 karakter"),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const from = searchParams.get("from") ?? "/dashboard";
@@ -58,11 +58,16 @@ export default function LoginPage() {
       </button>
 
       <div className="w-full max-w-sm">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-primary text-primary-foreground font-bold text-sm">
-            AP
-          </span>
-          <span className="font-bold text-2xl tracking-tight">AdminPanel</span>
+        <div className="flex flex-col items-center justify-center gap-2 mb-8">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground">
+              <Gem className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="font-extrabold text-2xl tracking-tight">PERONHUB</span>
+          </div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.8px] text-muted-foreground">
+            Direktorat Jenderal Perkeretaapian
+          </p>
         </div>
 
         <Card>
@@ -137,5 +142,13 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <LoginContent />
+    </Suspense>
   );
 }

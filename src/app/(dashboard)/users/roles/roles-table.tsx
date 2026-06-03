@@ -11,6 +11,12 @@ import type { TableFilters } from "@/stores/table.store";
 
 const TABLE_KEY = "roles";
 
+// Tipe role → warna semantik DJKA (soft pill)
+const TYPE_COLOR = {
+  Sistem: "primary",
+  Kustom: "warning",
+} as const satisfies Record<string, "primary" | "warning">;
+
 const COLUMNS = [
   {
     key: "name",
@@ -33,9 +39,10 @@ const COLUMNS = [
     header: "Tipe",
     cell: (role: Role) => (
       <Badge
-        variant={role.type === "Sistem" ? "plain" : "plain"}
-        color={role.type === "Sistem" ? "primary" : "warning"}
-        radius={"full"}
+        variant="soft"
+        color={TYPE_COLOR[role.type as keyof typeof TYPE_COLOR] ?? "info"}
+        radius="full"
+        dot
       >
         {role.type}
       </Badge>
@@ -47,12 +54,12 @@ const COLUMNS = [
     cell: (role: Role) => (
       <div className="flex flex-wrap gap-1 max-w-[220px]">
         {role.permissions.slice(0, 3).map((p) => (
-          <Badge key={p} variant="plain" color="info">
+          <Badge key={p} variant="plain" color="info" radius="md">
             {p}
           </Badge>
         ))}
         {role.permissions.length > 3 && (
-          <Badge variant="plain" color="info">
+          <Badge variant="plain" color="info" radius="md">
             +{role.permissions.length - 3}
           </Badge>
         )}

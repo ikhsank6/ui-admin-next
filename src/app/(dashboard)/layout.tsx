@@ -2,7 +2,7 @@
 
 import { AppFooter } from "@/components/layout/app-footer";
 import { AppNavbar } from "@/components/layout/app-navbar";
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { SidebarPanel, SidebarRail } from "@/components/layout/app-sidebar";
 import { SidebarContext, useSidebarState } from "@/hooks/use-sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -10,14 +10,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <SidebarContext.Provider value={sidebar}>
-      <div className="flex flex-col h-screen overflow-hidden">
-        <AppNavbar />
-        <div className="flex flex-1 overflow-hidden min-h-0">
-          <AppSidebar />
-          <main className="flex-1 overflow-y-auto flex flex-col">
-            <div className="flex-1">{children}</div>
-            <AppFooter />
-          </main>
+      <div className="flex h-screen overflow-hidden">
+        {/* Kolom 1 — Rail ikon full-height */}
+        <SidebarRail />
+
+        {/* Kolom kanan — topbar + (submenu + konten) */}
+        <div className="flex flex-1 flex-col overflow-hidden min-w-0">
+          <AppNavbar />
+          <div className="flex flex-1 overflow-hidden min-h-0">
+            <SidebarPanel />
+            <main className="flex-1 overflow-y-auto flex flex-col min-w-0">
+              <div className="flex-1">{children}</div>
+              <AppFooter />
+            </main>
+          </div>
         </div>
       </div>
     </SidebarContext.Provider>

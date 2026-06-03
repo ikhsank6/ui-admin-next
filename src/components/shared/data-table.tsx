@@ -80,6 +80,7 @@ interface DataTableProps<T> {
   searchValue?: string;
   onRefresh?: () => void;
   headerAction?: React.ReactNode;
+  filters?: React.ReactNode; // slot filter (dropdown dll) di kiri toolbar
   // Messages
   emptyMessage?: string;
   loadingMessage?: string;
@@ -96,6 +97,7 @@ interface DataTableProps<T> {
   // Misc
   showViewToggle?: boolean;
   showColumnVisibility?: boolean;
+  showRefresh?: boolean;
   className?: string;
 }
 
@@ -112,6 +114,7 @@ export function DataTable<T>({
   searchValue = "",
   onRefresh,
   headerAction,
+  filters,
   emptyMessage = "Tidak ada data.",
   loadingMessage = "Memuat data...",
   isError = false,
@@ -124,17 +127,19 @@ export function DataTable<T>({
   itemsPerPage = 10,
   onItemsPerPageChange,
   showViewToggle = false,
-  showColumnVisibility = true,
+  showColumnVisibility = false,
+  showRefresh = false,
   className,
 }: DataTableProps<T>) {
   const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
   const [visibleColumnKeys, setVisibleColumnKeys] = React.useState<Set<string>>(
     () => new Set(columns.filter((c) => c.defaultVisible !== false).map((c) => c.key))
   );
-  const [goToPage, setGoToPage] = React.useState("");
 
   const hideableColumns = columns.filter((c) => c.hideable !== false);
   const allHideableVisible = hideableColumns.every((c) => visibleColumnKeys.has(c.key));
+
+  // (goToPage dihapus — pagination kini hanya nomor halaman sesuai guideline)
   const visibleColumns = columns.filter(
     (c) => c.hideable === false || visibleColumnKeys.has(c.key)
   );
@@ -166,8 +171,9 @@ export function DataTable<T>({
   // ── Toolbar ──────────────────────────────────────────────────────────────────
   const toolbar = (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b px-4 py-3">
-      {/* Left: search */}
-      <div className="flex items-center gap-2 w-full sm:flex-1">
+      {/* Left: filters + search */}
+      <div className="flex flex-wrap items-center gap-2 w-full sm:flex-1">
+        {filters}
         {onSearch && (
           <div className="relative flex-1 sm:max-w-xs">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
@@ -192,11 +198,32 @@ export function DataTable<T>({
         )}
       </div>
 
-      {/* Right: headerAction + refresh + column visibility + view toggle */}
+      {/* Right: Tampilkan N entri + headerAction + refresh + column visibility + view toggle */}
       <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+        {onItemsPerPageChange && (
+          <div className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground">
+            <span className="whitespace-nowrap">Tampilkan</span>
+            <Select
+              value={String(itemsPerPage)}
+              onValueChange={(v) => onItemsPerPageChange(Number.parseInt(v, 10))}
+            >
+              <SelectTrigger className="h-9 w-[72px] text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[10, 20, 50, 100].map((n) => (
+                  <SelectItem key={n} value={String(n)}>
+                    {n}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <span className="whitespace-nowrap">entri</span>
+          </div>
+        )}
         {headerAction}
 
-        {onRefresh && (
+        {showRefresh && onRefresh && (
           <ActionButton
             variant="outline"
             size="sm"
@@ -336,13 +363,13 @@ export function DataTable<T>({
   const tableView = (
     <div className="overflow-x-auto">
       <Table className="dark:bg-[hsl(var(--table-bg))]">
-        <TableHeader>
-          <TableRow className="hover:bg-transparent bg-[hsl(var(--table-header))] dark:bg-[hsl(var(--table-bg))]">
+        <TableHeader className="bg-[#F8FAFC] dark:bg-[hsl(var(--table-bg))] border-b-2 border-border [&_tr]:border-b-0">
+          <TableRow className="hover:bg-transparent">
             {visibleColumns.map((col) => (
               <TableHead
                 key={col.key}
                 className={cn(
-                  "text-xs font-bold uppercase tracking-wider text-muted-foreground px-4 py-3",
+                  "text-[11.5px] font-bold uppercase tracking-[0.4px] text-muted-foreground px-4 py-3",
                   col.headerClassName
                 )}
               >
@@ -350,8 +377,8 @@ export function DataTable<T>({
               </TableHead>
             ))}
             {actions && (
-              <TableHead className="text-xs font-bold uppercase tracking-wider text-muted-foreground text-right px-4 w-28">
-                Actions
+              <TableHead className="text-[11.5px] font-bold uppercase tracking-[0.4px] text-muted-foreground text-right px-4 w-px whitespace-nowrap">
+                Aksi
               </TableHead>
             )}
           </TableRow>
@@ -364,7 +391,7 @@ export function DataTable<T>({
               : data.map((item) => (
                   <TableRow
                     key={keyExtractor(item)}
-                    className="group dark:bg-[hsl(var(--table-bg))] hover:bg-[hsl(var(--row-hover))]"
+                    className="group bg-card even:bg-[hsl(var(--table-header))] hover:bg-[hsl(var(--row-hover))] dark:bg-[hsl(var(--table-bg))] dark:even:bg-[hsl(var(--table-header))]"
                   >
                     {visibleColumns.map((col) => (
                       <TableCell key={col.key} className={cn("px-4 py-3", col.className)}>
@@ -373,22 +400,23 @@ export function DataTable<T>({
                     ))}
                     {actions && (
                       <TableCell className="text-right px-4 py-3">
-                        <div className="flex items-center justify-end gap-1">
+                        <div className="flex items-center justify-end gap-1.5">
                           {actions.onView && (
                             <ActionButton
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                              variant="outline"
+                              size="sm"
+                              className="h-8 gap-1.5 border-primary/30 text-primary hover:bg-primary-light hover:text-primary hover:border-primary/40"
                               onClick={() => actions.onView?.(item)}
                               icon={<Eye className="h-4 w-4" />}
+                              title="Detail"
                               tooltip="Lihat Detail"
                             />
                           )}
                           {actions.onEdit && (
                             <ActionButton
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-muted-foreground hover:text-primary"
+                              variant="outline"
+                              size="icon-sm"
+                              className="text-muted-foreground hover:text-primary hover:border-primary/40"
                               onClick={() => actions.onEdit?.(item)}
                               icon={<Pencil className="h-4 w-4" />}
                               tooltip="Edit"
@@ -396,9 +424,9 @@ export function DataTable<T>({
                           )}
                           {actions.onDelete && (
                             <ActionButton
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                              variant="outline"
+                              size="icon-sm"
+                              className="text-muted-foreground hover:text-destructive hover:border-destructive/40"
                               onClick={() => actions.onDelete?.(item)}
                               icon={<Trash2 className="h-4 w-4" />}
                               tooltip="Hapus"
@@ -409,10 +437,10 @@ export function DataTable<T>({
                             .map((a) => (
                               <ActionButton
                                 key={a.label}
-                                variant={a.variant ?? "ghost"}
-                                size="icon"
+                                variant={a.variant ?? "outline"}
+                                size="icon-sm"
                                 className={cn(
-                                  "h-8 w-8 text-muted-foreground hover:text-foreground",
+                                  "text-muted-foreground hover:text-foreground",
                                   a.className
                                 )}
                                 onClick={() => a.onClick(item)}
@@ -487,117 +515,75 @@ export function DataTable<T>({
         </div>
       </div>
 
-      {/* Desktop: full pagination */}
+      {/* Desktop: count (kiri) + pagination (kanan) */}
       <div className="hidden sm:flex items-center justify-between gap-3">
-        {/* 1. Rows per page — rata kiri */}
-        {onItemsPerPageChange ? (
-          <Select
-            value={String(itemsPerPage)}
-            onValueChange={(v) => onItemsPerPageChange(Number.parseInt(v, 10))}
+        {/* Menampilkan X sampai Y dari Z data — rata kiri */}
+        <p className="text-sm whitespace-nowrap">
+          {totalItems !== undefined ? (
+            <>
+              Menampilkan{" "}
+              <span className="font-semibold text-foreground">
+                {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}
+              </span>
+              {" sampai "}
+              <span className="font-semibold text-foreground">
+                {Math.min(currentPage * itemsPerPage, totalItems)}
+              </span>
+              {" dari "}
+              <span className="font-semibold text-foreground">
+                {totalItems.toLocaleString("id-ID")}
+              </span>{" "}
+              data
+            </>
+          ) : (
+            <>
+              <span className="font-semibold text-foreground">{data.length}</span> data
+            </>
+          )}
+        </p>
+
+        {/* Pagination buttons — rata kanan */}
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="icon-sm"
+            disabled={currentPage <= 1 || loading}
+            onClick={() => onPageChange?.(currentPage - 1)}
+            aria-label="Halaman sebelumnya"
           >
-            <SelectTrigger className="h-8 w-32 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {[10, 20, 50, 100].map((n) => (
-                <SelectItem key={n} value={String(n)}>
-                  {n}/halaman
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ) : (
-          <div />
-        )}
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-        {/* Right group: count + pagination + go to */}
-        <div className="flex items-center gap-3">
-          {/* 2. X – Y of Z */}
-          <p className="text-sm whitespace-nowrap">
-            {totalItems !== undefined ? (
-              <>
-                <span className="font-semibold text-foreground">
-                  {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}
-                </span>
-                {" – "}
-                <span className="font-semibold text-foreground">
-                  {Math.min(currentPage * itemsPerPage, totalItems)}
-                </span>
-                {" dari "}
-                <span className="font-semibold text-foreground">{totalItems}</span>
-              </>
+          {buildPageNumbers(currentPage, totalPages).map((page, idx) =>
+            page === "ellipsis" ? (
+              // biome-ignore lint/suspicious/noArrayIndexKey: static ellipsis list
+              <span key={`e-${idx}`} className="px-2 text-muted-foreground">
+                ...
+              </span>
             ) : (
-              <span className="font-semibold text-foreground">{data.length}</span>
-            )}
-          </p>
+              <Button
+                key={page}
+                variant={page === currentPage ? "default" : "outline"}
+                size="icon-sm"
+                className="text-sm"
+                disabled={loading}
+                onClick={() => onPageChange?.(page as number)}
+                aria-current={page === currentPage ? "page" : undefined}
+              >
+                {page}
+              </Button>
+            )
+          )}
 
-          <div className="h-5 w-px bg-border" />
-
-          {/* 3. Pagination buttons */}
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2"
-              disabled={currentPage <= 1 || loading}
-              onClick={() => onPageChange?.(currentPage - 1)}
-            >
-              <ChevronLeft className="h-4 w-4 mr-1" />
-            </Button>
-
-            {buildPageNumbers(currentPage, totalPages).map((page, idx) =>
-              page === "ellipsis" ? (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static ellipsis list
-                <span key={`e-${idx}`} className="px-2 text-muted-foreground">
-                  ...
-                </span>
-              ) : (
-                <Button
-                  key={page}
-                  variant={page === currentPage ? "default" : "ghost"}
-                  size="icon"
-                  className="h-8 w-8 text-sm"
-                  disabled={loading}
-                  onClick={() => onPageChange?.(page as number)}
-                >
-                  {page}
-                </Button>
-              )
-            )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 px-2"
-              disabled={currentPage >= totalPages || loading}
-              onClick={() => onPageChange?.(currentPage + 1)}
-            >
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Button>
-          </div>
-
-          <div className="h-5 w-px bg-border" />
-
-          {/* 4. Go to page */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm whitespace-nowrap">Pergi ke</span>
-            <Input
-              className="h-8 w-14 px-2 text-center text-sm"
-              value={goToPage}
-              placeholder={String(currentPage)}
-              onChange={(e) => setGoToPage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                const p = Number.parseInt(goToPage, 10);
-                if (p >= 1 && p <= totalPages) {
-                  onPageChange?.(p);
-                  setGoToPage("");
-                }
-              }}
-              disabled={loading}
-            />
-            {/* <span className="text-sm whitespace-nowrap">dari {totalPages}</span> */}
-          </div>
+          <Button
+            variant="outline"
+            size="icon-sm"
+            disabled={currentPage >= totalPages || loading}
+            onClick={() => onPageChange?.(currentPage + 1)}
+            aria-label="Halaman berikutnya"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       </div>
     </div>

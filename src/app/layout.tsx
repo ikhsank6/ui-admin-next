@@ -1,30 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-ui",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "AdminPanel",
-    template: "%s | AdminPanel",
+    default: "Portal DJKA",
+    template: "%s | Portal DJKA",
   },
-  description: "Template admin dashboard modern dengan Next.js dan shadcn/ui",
-  metadataBase: new URL("https://template-youtube.vercel.app"),
+  description:
+    "Portal Pelayanan Perkeretaapian Online — Direktorat Jenderal Perkeretaapian, Kementerian Perhubungan RI",
+  metadataBase: new URL("https://portal.djka.kemenhub.go.id"),
   openGraph: {
     type: "website",
-    siteName: "AdminPanel",
+    siteName: "Portal DJKA",
   },
   twitter: {
     card: "summary_large_image",
@@ -35,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="id"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">

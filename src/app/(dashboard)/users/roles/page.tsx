@@ -12,9 +12,9 @@ export default function RolesPage() {
     <div className="flex flex-col gap-4 p-6">
       <PageBreadcrumb
         items={[
-          { label: "Beranda", href: "/dashboard" },
-          { label: "Pengguna", href: "/users" },
-          { label: "Roles" },
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Daftar User", href: "/users" },
+          { label: "Roles & Hak Akses", href: "/users/roles" },
         ]}
       />
       <RolesView />

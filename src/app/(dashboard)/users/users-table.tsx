@@ -9,17 +9,19 @@ import { fetchUsers } from "@/lib/api/users";
 
 const TABLE_KEY = "users";
 
-const ROLE_VARIANT = {
-  Admin: "default",
-  Editor: "secondary",
-  Viewer: "outline",
-} as const;
+// Pemetaan role → warna semantik DJKA
+const ROLE_COLOR = {
+  Admin: "danger",
+  Editor: "warning",
+  Viewer: "info",
+} as const satisfies Record<string, "danger" | "warning" | "info">;
 
-const STATUS_VARIANT = {
-  Aktif: "default",
-  Pending: "secondary",
-  Ditangguhkan: "destructive",
-} as const;
+// Pemetaan status → warna semantik DJKA
+const STATUS_COLOR = {
+  Aktif: "success",
+  Pending: "warning",
+  Ditangguhkan: "danger",
+} as const satisfies Record<string, "success" | "warning" | "danger">;
 
 const COLUMNS = [
   {
@@ -44,7 +46,7 @@ const COLUMNS = [
     key: "role",
     header: "Role",
     cell: (user: User) => (
-      <Badge variant={ROLE_VARIANT[user.role]} className="text-xs">
+      <Badge variant="soft" color={ROLE_COLOR[user.role]} radius="full" dot>
         {user.role}
       </Badge>
     ),
@@ -53,7 +55,7 @@ const COLUMNS = [
     key: "status",
     header: "Status",
     cell: (user: User) => (
-      <Badge variant={STATUS_VARIANT[user.status]} className="text-xs">
+      <Badge variant="soft" color={STATUS_COLOR[user.status]} radius="full" dot>
         {user.status}
       </Badge>
     ),

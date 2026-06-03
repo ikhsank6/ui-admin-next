@@ -1,48 +1,58 @@
 @import "tailwindcss";
 
 @layer base {
+  /* ───────────────────────────────────────────────────────────────────────────
+   * Portal DJKA (PERONHUB) Design Tokens
+   * Sumber kebenaran: UI/UX Design Guidelines v1.0 2026
+   * HSL triplet (Tailwind v4 `hsl(var(--token))`). Padanan hex pada komentar.
+   * ─────────────────────────────────────────────────────────────────────────── */
   :root {
-    --background: 220 20% 97%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --background: 210 40% 98%; /* #F8FAFC */
+    --foreground: 222 47% 11%; /* #0F172A — text */
+    --card: 0 0% 100%; /* #FFFFFF — surface */
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 217 91% 60%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 224 76% 48%; /* #1D4ED8 — Blue Primary */
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+    --primary-hover: 221 83% 53%; /* #2563EB — Blue Hover */
+    --primary-light: 214 100% 97%; /* #EFF6FF — Blue BG */
+    --primary-border: 214 100% 87%; /* #BFDBFE — Blue Border */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%; /* #64748B */
+    --accent: 214 100% 97%; /* #EFF6FF */
+    --accent-foreground: 224 76% 48%;
+    --destructive: 0 72% 51%; /* #DC2626 — Danger */
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 76% 36%; /* #16A34A */
+    --warning: 32 95% 44%; /* #D97706 */
+    --info: 200 98% 39%; /* #0284C7 */
+    --purple: 263 72% 57%; /* #7C3AED — Dalam Proses Hukum */
+    --border: 214 32% 91%; /* #E2E8F0 */
+    --input: 215 25% 84%; /* #CBD5E1 — input border 1.5px */
+    --ring: 221 83% 53%; /* #2563EB — focus ring */
+    --radius: 0.625rem; /* 10px — card standar */
 
-    /* Table — sedikit lebih gelap dari card (putih) agar terlihat beda */
-    --table-bg: 220 20% 97.5%;
-    /* Table header row */
-    --table-header: 220 15% 92%;
-    /* Table row hover */
-    --row-hover: 220 20% 93%;
+    /* Table */
+    --table-bg: 0 0% 100%;
+    --table-header: 210 40% 98%; /* #F8FAFC */
+    --row-hover: 210 40% 98%; /* #F8FAFC */
 
-    /* Navbar — always dark top bar */
-    --navbar: 228 47% 14%;
+    /* Topbar global — selalu navy gelap */
+    --navbar: 222 47% 11%; /* #0F172A */
     --navbar-foreground: 0 0% 92%;
 
-    /* Sidebar */
-    --sidebar: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 234 80% 93%;
-    --sidebar-accent-foreground: 221 99% 35%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 240 5.9% 10%;
+    /* Sidebar ikon — selalu navy gelap di kedua mode */
+    --sidebar: 228 47% 14%; /* #131A35 */
+    --sidebar-foreground: 215 20% 72%;
+    --sidebar-primary: 224 76% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 72% 24%; /* approx rgba(37,99,235,.2) di atas navy */
+    --sidebar-accent-foreground: 213 94% 68%; /* #60A5FA — Blue 300 */
+    --sidebar-border: 224 30% 22%;
+    --sidebar-ring: 221 83% 53%;
   }
 
   .dark {
@@ -54,8 +64,15 @@
     --card-foreground: 0 0% 92%;
     --popover: 213 38% 14%;
     --popover-foreground: 0 0% 92%;
-    --primary: 217 91% 60%;
+    --primary: 221 83% 53%; /* #2563EB — sedikit lebih terang di dark */
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 224 76% 48%;
+    --primary-light: 224 60% 18%;
+    --primary-border: 224 50% 30%;
+    --success: 142 70% 45%;
+    --warning: 32 95% 50%;
+    --info: 200 90% 50%;
+    --purple: 263 72% 65%; /* lighter di dark mode */
     --secondary: 213 32% 20%;
     --secondary-foreground: 0 0% 92%;
     --muted: 213 32% 20%;
@@ -75,23 +92,25 @@
     /* Table row hover dark */
     --row-hover: 213 38% 13%;
 
-    /* Navbar dark */
-    --navbar: 228 47% 14%;
+    /* Topbar dark — navy #0F172A */
+    --navbar: 222 47% 11%;
     --navbar-foreground: 0 0% 90%;
 
-    /* Sidebar dark */
-    --sidebar: 213 42% 11%;
-    --sidebar-foreground: 240 5% 84.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    /* Sidebar dark — navy #131A35 (konsisten dengan light) */
+    --sidebar: 228 47% 14%;
+    --sidebar-foreground: 215 20% 72%;
+    --sidebar-primary: 224 76% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 45% 26%;
-    --sidebar-accent-foreground: 217 91% 80%;
-    --sidebar-border: 213 35% 18%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 224 72% 24%;
+    --sidebar-accent-foreground: 213 94% 68%;
+    --sidebar-border: 224 30% 22%;
+    --sidebar-ring: 221 83% 53%;
   }
 }
 
 @theme inline {
+  --font-sans: var(--font-ui), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -100,6 +119,13 @@
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-hover: hsl(var(--primary-hover));
+  --color-primary-light: hsl(var(--primary-light));
+  --color-primary-border: hsl(var(--primary-border));
+  --color-success: hsl(var(--success));
+  --color-warning: hsl(var(--warning));
+  --color-info: hsl(var(--info));
+  --color-purple: hsl(var(--purple));
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
   --color-muted: hsl(var(--muted));
@@ -136,7 +162,32 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    font-family: var(--font-ui), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Aksesibilitas — focus ring standar WCAG 2.1 AA (Guideline §Aksesibilitas) */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ID / nomor referensi / data teknis — JetBrains Mono */
+  .font-data {
+    font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Hormati preferensi pengguna sensitif gerak (Guideline §Aksesibilitas) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

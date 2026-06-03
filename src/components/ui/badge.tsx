@@ -29,6 +29,7 @@ const badgeVariants = cva(
         info: "",
         warning: "",
         danger: "",
+        purple: "",
       },
       radius: {
         md: "rounded-md",
@@ -36,44 +37,83 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // ── Solid ─────────────────────────────────────────────────
-      { variant: "solid", color: "primary", class: "bg-blue-500" },
-      { variant: "solid", color: "success", class: "bg-green-500" },
-      { variant: "solid", color: "info", class: "bg-gray-400 dark:bg-gray-500" },
-      { variant: "solid", color: "warning", class: "bg-amber-400" },
-      { variant: "solid", color: "danger", class: "bg-rose-400" },
-      // ── Soft ──────────────────────────────────────────────────
+      // ── Solid (warna semantik DJKA penuh) ─────────────────────
+      { variant: "solid", color: "primary", class: "bg-[hsl(var(--primary))]" },
+      { variant: "solid", color: "success", class: "bg-[hsl(var(--success))]" },
+      { variant: "solid", color: "info", class: "bg-[hsl(var(--muted-foreground))]" },
+      { variant: "solid", color: "warning", class: "bg-[hsl(var(--warning))]" },
+      { variant: "solid", color: "danger", class: "bg-[hsl(var(--destructive))]" },
+      // ── Soft (status pill — bg lembut + teks warna, pola DJKA) ─
       {
         variant: "soft",
         color: "primary",
-        class: "bg-blue-500/15 border-blue-500/30 text-blue-600 dark:text-blue-400",
+        class:
+          "bg-[hsl(var(--primary)/0.1)] border-[hsl(var(--primary)/0.25)] text-[hsl(var(--primary))] dark:text-[hsl(var(--sidebar-accent-foreground))]",
       },
       {
         variant: "soft",
         color: "success",
-        class: "bg-green-500/15 border-green-500/30 text-green-600 dark:text-green-400",
+        class:
+          "bg-[hsl(var(--success)/0.12)] border-[hsl(var(--success)/0.25)] text-[hsl(var(--success))]",
       },
       {
         variant: "soft",
         color: "info",
-        class: "bg-gray-500/15 border-gray-500/30 text-gray-600 dark:text-gray-400",
+        class:
+          "bg-[hsl(var(--muted-foreground)/0.12)] border-[hsl(var(--muted-foreground)/0.25)] text-[hsl(var(--muted-foreground))]",
       },
       {
         variant: "soft",
         color: "warning",
-        class: "bg-amber-500/15 border-amber-500/30 text-amber-600 dark:text-amber-400",
+        class:
+          "bg-[hsl(var(--warning)/0.12)] border-[hsl(var(--warning)/0.25)] text-[hsl(var(--warning))]",
       },
       {
         variant: "soft",
         color: "danger",
-        class: "bg-rose-500/15 border-rose-500/30 text-rose-600 dark:text-rose-400",
+        class:
+          "bg-[hsl(var(--destructive)/0.12)] border-[hsl(var(--destructive)/0.25)] text-[hsl(var(--destructive))]",
       },
-      // ── Plain ─────────────────────────────────────────────────
-      { variant: "plain", color: "primary", class: "border-blue-500/60 text-blue-500" },
-      { variant: "plain", color: "success", class: "border-green-500/60 text-green-500" },
-      { variant: "plain", color: "info", class: "border-gray-500/60 text-gray-500" },
-      { variant: "plain", color: "warning", class: "border-amber-500/60 text-amber-500" },
-      { variant: "plain", color: "danger", class: "border-rose-500/60 text-rose-500" },
+      // ── Solid purple ──────────────────────────────────────────
+      { variant: "solid", color: "purple", class: "bg-[hsl(var(--purple))]" },
+      // ── Soft purple ───────────────────────────────────────────
+      {
+        variant: "soft",
+        color: "purple",
+        class:
+          "bg-[hsl(var(--purple)/0.12)] border-[hsl(var(--purple)/0.25)] text-[hsl(var(--purple))]",
+      },
+      // ── Plain (outline tipis + teks warna) ────────────────────
+      {
+        variant: "plain",
+        color: "primary",
+        class: "border-[hsl(var(--primary)/0.5)] text-[hsl(var(--primary))]",
+      },
+      {
+        variant: "plain",
+        color: "success",
+        class: "border-[hsl(var(--success)/0.5)] text-[hsl(var(--success))]",
+      },
+      {
+        variant: "plain",
+        color: "info",
+        class: "border-[hsl(var(--muted-foreground)/0.5)] text-[hsl(var(--muted-foreground))]",
+      },
+      {
+        variant: "plain",
+        color: "warning",
+        class: "border-[hsl(var(--warning)/0.5)] text-[hsl(var(--warning))]",
+      },
+      {
+        variant: "plain",
+        color: "danger",
+        class: "border-[hsl(var(--destructive)/0.5)] text-[hsl(var(--destructive))]",
+      },
+      {
+        variant: "plain",
+        color: "purple",
+        class: "border-[hsl(var(--purple)/0.5)] text-[hsl(var(--purple))]",
+      },
     ],
     defaultVariants: {
       variant: "default",
@@ -89,8 +129,15 @@ function Badge({
   color = "none",
   radius = "full",
   asChild = false,
+  dot = false,
+  children,
   ...props
-}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+}: React.ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants> & {
+    asChild?: boolean;
+    dot?: boolean;
+    color?: "none" | "primary" | "success" | "info" | "warning" | "danger" | "purple";
+  }) {
   const Comp = asChild ? Slot.Root : "span";
 
   return (
@@ -98,7 +145,12 @@ function Badge({
       data-slot="badge"
       className={cn(badgeVariants({ variant, color, radius }), className)}
       {...props}
-    />
+    >
+      {dot && !asChild && (
+        <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-current" />
+      )}
+      {children}
+    </Comp>
   );
 }
 

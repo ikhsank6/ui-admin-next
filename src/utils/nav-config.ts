@@ -4,9 +4,10 @@ import {
   Clock,
   FolderOpen,
   Home,
-  LayoutDashboard,
+  LayoutGrid,
   type LucideIcon,
   Settings,
+  ShieldCheck,
   Star,
   Users,
 } from "lucide-react";
@@ -18,26 +19,33 @@ export type NavItem = {
   badge?: number;
 };
 
-export type NavGroup = {
-  title: string;
-  items: NavItem[];
+// Satu section = satu ikon di rail kiri + satu daftar submenu di kolom kedua.
+export type NavSection = {
+  title: string; // overline header pada panel submenu
+  icon: LucideIcon; // ikon di rail (kolom 1)
+  items: NavItem[]; // submenu (kolom 2)
 };
 
-export const primaryNav: NavItem[] = [
-  { title: "Dashboard", href: "/dashboard", icon: Home },
-  { title: "Analitik", href: "/analytics", icon: BarChart3 },
-];
-
-export const navGroups: NavGroup[] = [
+export const navSections: NavSection[] = [
   {
-    title: "Pengguna",
+    title: "Beranda",
+    icon: LayoutGrid,
     items: [
-      { title: "Daftar User", href: "/users", icon: Users, badge: 12 },
-      { title: "Roles", href: "/users/roles", icon: LayoutDashboard },
+      { title: "Dashboard", href: "/dashboard", icon: Home },
+      { title: "Analitik", href: "/analytics", icon: BarChart3 },
     ],
   },
   {
-    title: "Anda",
+    title: "Manajemen Pengguna",
+    icon: Users,
+    items: [
+      { title: "Daftar User", href: "/users", icon: Users, badge: 12 },
+      { title: "Roles & Hak Akses", href: "/users/roles", icon: ShieldCheck },
+    ],
+  },
+  {
+    title: "Akun & Preferensi",
+    icon: Settings,
     items: [
       { title: "Profil Saya", href: "/settings", icon: BookOpen },
       { title: "Aktivitas", href: "/settings/activity", icon: Clock },
@@ -47,7 +55,33 @@ export const navGroups: NavGroup[] = [
   },
 ];
 
-export const bottomNav: NavItem[] = [{ title: "Pengaturan", href: "/settings", icon: Settings }];
+// Semua leaf item (untuk pencarian / fallback flat list).
+export const allNavItems: NavItem[] = navSections.flatMap((s) => s.items);
+
+// Cari index section yang aktif berdasarkan path (prefix match terpanjang).
+export function findActiveSectionIndex(pathname: string): number {
+  let best = 0;
+  let bestLen = -1;
+  navSections.forEach((section, i) => {
+    for (const item of section.items) {
+      const match = pathname === item.href || pathname.startsWith(`${item.href}/`);
+      if (match && item.href.length > bestLen) {
+        best = i;
+        bestLen = item.href.length;
+      }
+    }
+  });
+  return best;
+}
+
+export function isItemActive(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+// Cari NavItem berdasarkan href — untuk sinkronisasi ikon breadcrumb dengan sidebar.
+export function getNavItem(href: string): NavItem | undefined {
+  return allNavItems.find((item) => item.href === href);
+}
 
 export const categoryChips = [
   "Semua",

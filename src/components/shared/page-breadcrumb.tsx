@@ -4,11 +4,18 @@ import { motion, useAnimation } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
+import { getNavItem } from "@/utils/nav-config";
+
+// ─── Tipe ──────────────────────────────────────────────────────────────────────
+// Hanya nilai serializable — icon diambil otomatis dari navSections berdasarkan href,
+// sehingga selalu konsisten dengan sidebar (Guideline §Layout aturan 4).
 
 export type BreadcrumbEntry = {
   label: string;
-  href?: string;
+  href: string; // wajib — digunakan untuk resolusi ikon dari navSections
 };
+
+// ─── Animasi ───────────────────────────────────────────────────────────────────
 
 const container = {
   hidden: {},
@@ -25,6 +32,8 @@ const sepVariants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.2, ease: "easeOut" as const } },
 };
 
+// ─── Komponen ──────────────────────────────────────────────────────────────────
+
 export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
   const ref = useRef<HTMLElement>(null);
   const controls = useAnimation();
@@ -33,7 +42,7 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
     const el = ref.current;
     if (!el) return;
 
-    // Scroll terjadi di dalam <main>, bukan window
+    // Scroll terjadi di dalam <main>, bukan window (CLAUDE.md constraint).
     const scrollRoot = document.querySelector("main");
 
     const observer = new IntersectionObserver(
@@ -63,8 +72,11 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
       <ol className="flex flex-wrap items-center gap-1.5 text-sm break-words text-muted-foreground sm:gap-2.5">
         {items.map((crumb, index) => {
           const isLast = index === items.length - 1;
+          // Resolusi ikon dari navSections — konsisten dengan sidebar.
+          const Icon = getNavItem(crumb.href)?.icon;
+
           return (
-            <React.Fragment key={crumb.label}>
+            <React.Fragment key={crumb.href}>
               <motion.li
                 data-slot="breadcrumb-item"
                 className="inline-flex items-center gap-1.5"
@@ -74,16 +86,28 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
                   <span
                     data-slot="breadcrumb-page"
                     aria-current="page"
-                    className="font-normal text-foreground"
+                    className="inline-flex items-center gap-1.5 font-semibold text-foreground"
                   >
+                    {Icon && (
+                      <Icon
+                        className="h-4 w-4 text-primary shrink-0"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                    )}
                     {crumb.label}
                   </span>
                 ) : (
                   <a
                     data-slot="breadcrumb-link"
-                    href={crumb.href ?? "#"}
-                    className={cn("transition-colors hover:text-foreground")}
+                    href={crumb.href}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+                    )}
                   >
+                    {Icon && (
+                      <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
+                    )}
                     {crumb.label}
                   </a>
                 )}
