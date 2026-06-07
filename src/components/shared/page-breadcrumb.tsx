@@ -60,12 +60,6 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
     return () => observer.disconnect();
   }, [controls]);
 
-  const lastCrumb = items[items.length - 1];
-  if (!lastCrumb) return null;
-
-  // Resolusi ikon dari navSections — konsisten dengan sidebar.
-  const Icon = getNavItem(lastCrumb.href)?.icon;
-
   return (
     <motion.nav
       ref={ref}
@@ -75,27 +69,63 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
       initial="hidden"
       animate={controls}
     >
-      <ol className="flex items-center text-sm text-muted-foreground">
-        <motion.li
-          data-slot="breadcrumb-item"
-          className="inline-flex items-center"
-          variants={itemVariants}
-        >
-          <span
-            data-slot="breadcrumb-page"
-            aria-current="page"
-            className="inline-flex items-center gap-1.5 font-semibold text-foreground"
-          >
-            {Icon && (
-              <Icon
-                className="h-4 w-4 text-primary shrink-0"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            )}
-            {lastCrumb.label}
-          </span>
-        </motion.li>
+      <ol className="flex flex-wrap items-center gap-1.5 text-sm break-words text-muted-foreground sm:gap-2.5">
+        {items.map((crumb, index) => {
+          const isLast = index === items.length - 1;
+          // Resolusi ikon dari navSections — konsisten dengan sidebar.
+          const Icon = getNavItem(crumb.href)?.icon;
+
+          return (
+            <React.Fragment key={crumb.href}>
+              <motion.li
+                data-slot="breadcrumb-item"
+                className="inline-flex items-center gap-1.5"
+                variants={itemVariants}
+              >
+                {isLast ? (
+                  <span
+                    data-slot="breadcrumb-page"
+                    aria-current="page"
+                    className="inline-flex items-center gap-1.5 font-semibold text-foreground"
+                  >
+                    {Icon && (
+                      <Icon
+                        className="h-4 w-4 text-primary shrink-0"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {crumb.label}
+                  </span>
+                ) : (
+                  <a
+                    data-slot="breadcrumb-link"
+                    href={crumb.href}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+                    )}
+                  >
+                    {Icon && (
+                      <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
+                    )}
+                    {crumb.label}
+                  </a>
+                )}
+              </motion.li>
+
+              {!isLast && (
+                <motion.li
+                  role="presentation"
+                  aria-hidden="true"
+                  className="[&>svg]:size-3.5"
+                  variants={sepVariants}
+                >
+                  <ChevronRight />
+                </motion.li>
+              )}
+            </React.Fragment>
+          );
+        })}
       </ol>
     </motion.nav>
   );

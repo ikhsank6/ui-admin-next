@@ -25,7 +25,6 @@ export default function AnalyticsPage() {
     <div className="flex flex-col gap-6 p-6">
       <PageBreadcrumb
         items={[
-          { label: "Dashboard", href: "/dashboard" },
           { label: "Analitik", href: "/analytics" },
         ]}
       />
