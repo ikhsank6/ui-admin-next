@@ -80,21 +80,21 @@ export function AppNavbar() {
               />
             </svg>
           </div>
-          <span className="hidden lg:flex flex-col leading-none">
+          <span className="flex flex-col leading-none">
             <span className="font-extrabold text-[15px] tracking-tight text-white">
               PERONHUB
             </span>
-            <span className="text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
+            <span className="hidden sm:block text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
               Portal Pelayanan Perkeretaapian Online
             </span>
-            <span className="text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
+            <span className="hidden sm:block text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
               Direktorat Jenderal Perkeretaapian
             </span>
           </span>
         </Link>
 
         {/* Search Bar */}
-        <div className="hidden md:block ml-4">
+        <div className="ml-1 sm:ml-4 shrink-0">
           <SearchBar />
         </div>
 

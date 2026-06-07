@@ -108,7 +108,7 @@
   }
 }
 
-@theme inline {
+@theme {
   --font-sans: var(--font-ui), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
   --color-background: hsl(var(--background));

@@ -43,7 +43,7 @@ export function SidebarRail() {
                 className={cn(
                   "inline-flex h-11 w-11 items-center justify-center rounded-xl transition-colors",
                   isShown
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
                     : "text-sidebar-foreground/60 hover:bg-sidebar-accent/40 hover:text-sidebar-foreground"
                 )}
                 aria-label={s.title}
@@ -88,7 +88,7 @@ export function MobileSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
               className={cn(
                 "inline-flex h-11 w-11 items-center justify-center rounded-xl transition-colors",
                 isShown
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
                   : "text-sidebar-foreground/60 hover:bg-sidebar-accent/40 hover:text-sidebar-foreground"
               )}
               aria-label={s.title}

@@ -1,19 +1,10 @@
 "use client";
 
-import { LayoutDashboard, RotateCcw, Search, Settings, SlidersHorizontal, Users } from "lucide-react";
+import { LayoutDashboard, Settings, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AddButton } from "@/components/shared/button/add-button";
 import { ContentCard } from "@/components/shared/content-card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { FilterModal, type ActiveFilterPill } from "@/components/shared/filter-modal";
 import {
   Select,
   SelectContent,
@@ -21,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import type { Role } from "@/lib/api/roles";
 import type { TableFilters } from "@/stores/table.store";
 import { cn } from "@/utils/cn";
@@ -143,6 +133,14 @@ export function RolesView() {
     [applied]
   );
 
+  const activePills = useMemo<ActiveFilterPill[]>(() => {
+    const pills: ActiveFilterPill[] = [];
+    if (applied.type !== "Semua") pills.push({ label: "Tipe", value: applied.type });
+    if (applied.minUsers !== "") pills.push({ label: "Min. Pengguna", value: `≥${applied.minUsers}` });
+    if (applied.permission !== "") pills.push({ label: "Izin", value: applied.permission });
+    return pills;
+  }, [applied]);
+
   return (
     <>
       {/* Table Card */}
@@ -160,163 +158,97 @@ export function RolesView() {
       </ContentCard>
 
       {/* Filter Modal */}
-      <Dialog open={filterModalOpen} onOpenChange={setFilterModalOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-                <SlidersHorizontal className="h-4 w-4 text-primary" />
-              </div>
-              <div>
-                <DialogTitle>Filter Role</DialogTitle>
-                <DialogDescription>
-                  Saring daftar role berdasarkan kriteria
-                </DialogDescription>
-              </div>
-            </div>
-          </DialogHeader>
-
-          <Separator />
-
-          <div className="flex flex-col gap-5 py-1">
-            {/* Tipe Role */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
-                Tipe Role
-              </p>
-              <div className="flex items-center gap-1 bg-muted rounded-lg p-1 self-start">
-                {TYPE_FILTERS.map(({ label, icon: Icon }) => (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => setPending((p) => ({ ...p, type: label }))}
-                    className={cn(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all whitespace-nowrap",
-                      pending.type === label
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Min. Pengguna */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
-                Min. Pengguna
-              </p>
-              <div className="flex items-center gap-1 bg-muted rounded-lg p-1 self-start">
-                {MIN_USERS_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.value || "all"}
-                    type="button"
-                    onClick={() => setPending((p) => ({ ...p, minUsers: opt.value }))}
-                    className={cn(
-                      "px-3 py-1.5 rounded-md text-sm font-medium transition-all whitespace-nowrap",
-                      pending.minUsers === opt.value
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Memiliki Izin */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
-                Memiliki Izin
-              </p>
-              <Select
-                value={pending.permission || "__all__"}
-                onValueChange={(v) =>
-                  setPending((p) => ({ ...p, permission: v === "__all__" ? "" : v }))
-                }
-              >
-                <SelectTrigger className="h-9 text-sm w-full">
-                  <SelectValue placeholder="Semua izin" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__all__">Semua izin</SelectItem>
-                  {ALL_PERMISSIONS.map((perm) => (
-                    <SelectItem key={perm} value={perm}>
-                      {perm}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Active filter pills */}
-            {hasActiveFilters && (
-              <div className="flex flex-wrap gap-1.5">
-                {applied.type !== "Semua" && (
-                  <Badge variant="soft" color="primary" className="text-xs">
-                    Tipe: {applied.type}
-                  </Badge>
-                )}
-                {applied.minUsers !== "" && (
-                  <Badge variant="soft" color="primary" className="text-xs">
-                    Min. Pengguna: ≥{applied.minUsers}
-                  </Badge>
-                )}
-                {applied.permission !== "" && (
-                  <Badge variant="soft" color="primary" className="text-xs">
-                    Izin: {applied.permission}
-                  </Badge>
-                )}
-              </div>
-            )}
-          </div>
-
-          <Separator />
-
-          <DialogFooter className="gap-2 sm:gap-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="gap-1.5 text-muted-foreground"
-              onClick={resetPending}
-              disabled={
-                pending.type === "Semua" &&
-                pending.minUsers === "" &&
-                pending.permission === ""
-              }
-            >
-              <RotateCcw className="h-3.5 w-3.5" />
-              Reset
-            </Button>
-            {hasActiveFilters && (
-              <Button
+      <FilterModal
+        open={filterModalOpen}
+        onOpenChange={setFilterModalOpen}
+        title="Filter Role"
+        description="Saring daftar role berdasarkan kriteria"
+        activePills={activePills}
+        onApply={applyFilters}
+        onResetPending={resetPending}
+        onClearAll={resetFilters}
+        hasActiveFilters={hasActiveFilters}
+        hasPendingChanges={hasPendingChanges}
+        isPendingDefault={
+          pending.type === "Semua" &&
+          pending.minUsers === "" &&
+          pending.permission === ""
+        }
+      >
+        {/* Tipe Role */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
+            Tipe Role
+          </p>
+          <div className="flex items-center gap-1 bg-muted rounded-lg p-1 self-start">
+            {TYPE_FILTERS.map(({ label, icon: Icon }) => (
+              <button
+                key={label}
                 type="button"
-                variant="outline"
-                size="sm"
-                className="gap-1.5"
-                onClick={resetFilters}
+                onClick={() => setPending((p) => ({ ...p, type: label }))}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all whitespace-nowrap",
+                  pending.type === label
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                Hapus Filter
-              </Button>
-            )}
-            <Button
-              type="button"
-              size="sm"
-              className="gap-1.5"
-              onClick={applyFilters}
-              disabled={!hasPendingChanges && !hasActiveFilters}
-            >
-              <Search className="h-3.5 w-3.5" />
-              Terapkan
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+                <Icon className="h-3.5 w-3.5" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Min. Pengguna */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
+            Min. Pengguna
+          </p>
+          <div className="flex items-center gap-1 bg-muted rounded-lg p-1 self-start">
+            {MIN_USERS_OPTIONS.map((opt) => (
+              <button
+                key={opt.value || "all"}
+                type="button"
+                onClick={() => setPending((p) => ({ ...p, minUsers: opt.value }))}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-sm font-medium transition-all whitespace-nowrap",
+                  pending.minUsers === opt.value
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Memiliki Izin */}
+        <div className="flex flex-col gap-2">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
+            Memiliki Izin
+          </p>
+          <Select
+            value={pending.permission || "__all__"}
+            onValueChange={(v) =>
+              setPending((p) => ({ ...p, permission: v === "__all__" ? "" : v }))
+            }
+          >
+            <SelectTrigger className="h-9 text-sm w-full">
+              <SelectValue placeholder="Semua izin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all__">Semua izin</SelectItem>
+              {ALL_PERMISSIONS.map((perm) => (
+                <SelectItem key={perm} value={perm}>
+                  {perm}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </FilterModal>
 
       <RoleModal mode={sheet.mode} data={sheet.data} open={sheet.open} onOpenChange={closeSheet} />
     </>
