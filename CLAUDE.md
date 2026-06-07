@@ -82,14 +82,192 @@ Prop `showCloseButton` (default `true`) untuk mengontrol visibilitas tombol X.
 
 ## UI/UX Guidelines
 
-- Build modern, clean, professional interfaces.
-- Prioritize usability over decoration.
-- Maintain proper visual hierarchy.
-- Use whitespace effectively.
-- Ensure mobile-first responsiveness.
-- Avoid cluttered UI.
-- Prefer soft shadows and subtle borders.
-- Use consistent spacing system.
+> **Referensi lengkap:** lihat [`ui-ux.md`](file:///Users/ikhsank6/Proyek/learn/ui-admin-next/ui-ux.md) untuk panduan desain resmi Portal DJKA.
+> Semua aturan di bawah ini **wajib diikuti** saat membuat atau mengubah komponen UI.
+
+### 4 Prinsip Utama
+
+| Prinsip | Deskripsi |
+|---|---|
+| **Clarity** | Setiap elemen harus punya tujuan jelas. Hindari dekorasi tanpa nilai informasi. |
+| **Efficiency** | Pengguna menyelesaikan tugas dengan langkah paling minimal. |
+| **Consistency** | Komponen identik harus tampil dan berperilaku sama di seluruh halaman. |
+| **Accessibility** | Penuhi WCAG 2.1 Level AA minimum. |
+
+### Tipografi
+
+- **Font utama:** `Plus Jakarta Sans` (300–800).
+- **Font monospace:** `JetBrains Mono` — untuk ID, nomor referensi, kode sistem.
+- **Teks tombol:** Title Case (`"Simpan Data"`), bukan UPPERCASE atau lowercase.
+- **Label overline / grup menu:** `UPPERCASE` dengan `letter-spacing: 0.8px` — satu-satunya penggunaan uppercase.
+- **Maksimum 3 ukuran font** dalam satu komponen/card.
+- **Angka statistik besar** (dashboard): 28–36px, bobot 700–800, warna semantik.
+
+| Kategori | Size | Weight | Penggunaan |
+|---|---|---|---|
+| Display | 32px | 800 | Judul landing/hero |
+| H1 | 28px | 700 | Judul halaman utama |
+| H2 | 22px | 700 | Sub-judul bagian |
+| H3 | 18px | 600 | Judul card/widget |
+| H4 | 15px | 600 | Label grup, judul kecil |
+| Body 1 | 14px | 400 | Paragraf teks utama |
+| Body 2 | 13px | 400 | Teks pendukung |
+| Button | 13.5px | 600 | Label tombol |
+| Caption | 12px | 400 | Keterangan tabel |
+| Overline | 11px | 700 | Label grup navigasi |
+| Mono | 13px | 400–500 | ID, kode referensi |
+
+### Sistem Warna
+
+Jangan hardcode hex — gunakan CSS custom properties dari `globals.css`.
+
+**Warna Primer:**
+
+| Token | Hex | Deskripsi |
+|---|---|---|
+| Sidebar BG | `#131A35` | Background sidebar ikon |
+| Blue Primary | `#1D4ED8` | Warna aksi utama |
+| Blue Hover | `#2563EB` | Hover tombol primary |
+
+**Warna Semantik — hanya untuk makna status, bukan dekorasi:**
+
+| Token | Hex | Makna |
+|---|---|---|
+| Success | `#16A34A` | Berhasil, disetujui |
+| Warning | `#D97706` | Perlu perhatian |
+| Danger | `#DC2626` | Gagal, ditolak, error |
+| Purple | `#7C3AED` | Proses khusus / hukum |
+| Teal | `#0D9488` | Info sekunder |
+
+**Kontras minimum:** 4.5:1 untuk teks body, 3:1 untuk heading besar.
+
+### UX Writing
+
+- Bahasa Indonesia formal, lugas, tidak ambigu — sesuai KBBI/PUEBI.
+- Kalimat aktif lebih diutamakan untuk instruksi.
+- Judul halaman: kalimat nominal (`"Data Permohonan"`, bukan `"Lihat Data"`).
+- Label tombol: imperatif, Title Case, maks 3 kata (`"Simpan Data"`, `"Ajukan Permohonan"`).
+- Placeholder input: jelaskan format/contoh, bukan generik (`"Contoh: PT KAI (Persero)"`, bukan `"Masukkan nama..."`).
+- Pesan error: kalimat aktif + cara memperbaiki (`"NIP tidak ditemukan. Periksa kembali NIP Anda."`).
+- Konfirmasi dialog: judul tanya/tegas, 2 tombol (`"Ya, Hapus"` danger + `"Batalkan"` ghost).
+- Format tanggal tampilan: `"26 Maret 2026"` (ISO hanya untuk API/atribut HTML).
+- Jangan singkat istilah tidak baku (`"ID Permohonan"` ≠ `"ID Perm."`).
+
+### Layout & Struktur Halaman
+
+**Struktur layout:** Sidebar (72px) + Sub-Navigasi (200–260px) + Area Konten.
+
+**Sidebar:**
+- Lebar ikon: 72px tetap. Diperluas: 260px saat label teks.
+- Background: `#1a2035` (navy gelap) — tidak boleh warna lain.
+- Item aktif: `rgba(37,99,235,.2)` + garis kiri `3px solid #2563EB` + teks `#60A5FA`.
+- Transisi: `width 0.25s ease`.
+
+**Topbar:**
+- Tinggi: 56px, posisi sticky top-0.
+- Background: `#0F172A`.
+- Urutan elemen: Search Bar → Spacer → Tanggal/Waktu → Notifikasi → Avatar.
+- Search bar wajib tampilkan `Ctrl+K` badge.
+
+**Konten:**
+- Padding: 24px (mobile: 16px).
+- Card stat: grid 3–4 kolom, gap 16px.
+- Breadcrumb wajib ikon + judul konsisten dengan sidebar.
+
+**Urutan elemen halaman (wajib):**
+1. Topbar global
+2. Breadcrumb / Judul + ikon
+3. Alert (jika ada)
+4. Kartu statistik (opsional, maks 4)
+5. Filter & pencarian
+6. Tabel / konten utama
+7. Pagination
+
+### Sistem Ikon
+
+- Pustaka: **Lucide Icons** (rekomendasi utama), jangan campur pustaka.
+- Gaya: selalu **outline/stroke** (`stroke-width="2"`, `round`).
+- Ukuran: navigasi 20px, topbar 18px, tombol 14–16px, input 15px.
+- Warna: `currentColor`. Aktif: `#93C5FD`. Normal: `rgba(255,255,255,.4)`.
+- Ikon dekoratif: `aria-hidden="true"`. Ikon fungsional tanpa teks: `aria-label`.
+- Jangan tampilkan ikon tanpa label kecuali ada tooltip.
+
+### Spacing (Kelipatan 4px)
+
+Seluruh jarak harus kelipatan 4px. Tidak boleh 7px, 11px, 18px.
+
+| Token | Nilai | Penggunaan |
+|---|---|---|
+| sp-1 | 4px | Jarak mikro: ikon-teks |
+| sp-2 | 8px | Padding badge, gap kompak |
+| sp-3 | 12px | Padding chip, vertikal input |
+| sp-4 | 16px | Padding card, gap kolom tabel |
+| sp-5 | 20px | Padding card besar, gap section form |
+| sp-6 | 24px | Padding konten halaman, gap dashboard |
+| sp-8 | 32px | Jarak antar section besar |
+
+**Konsistensi:** semua card padding 16–20px — tidak boleh beda antar halaman.
+
+### Border Radius
+
+| Nilai | Elemen |
+|---|---|
+| 2px | Input micro |
+| 4px | Tag, chip kecil |
+| 6px | Button, input |
+| 8px | Dropdown, tooltip |
+| 10px | Card standar |
+| 12px | Card besar |
+| 16px | Modal, panel |
+| 9999px | Badge, pill |
+
+### Aksesibilitas (WCAG 2.1 AA)
+
+- Kontras minimum 4.5:1 body, 3:1 heading besar.
+- Semua input: `label` terhubung `for/id` atau `aria-label`.
+- Status badge: jangan hanya warna, sertakan teks status.
+- Disabled: atribut `disabled` HTML (bukan hanya CSS).
+- Tab order logis (kiri→kanan, atas→bawah). Jangan `tabindex > 0`.
+- Animasi: `@media (prefers-reduced-motion: reduce)` untuk disable.
+- Focus ring: `outline: 2px solid #2563EB; outline-offset: 3px`.
+
+### Komponen Atomic Design
+
+**Button:**
+- 4 varian: Primary (maks 1 per halaman), Secondary, Outline, Ghost.
+- Semantik: Danger (destruktif + konfirmasi), Success, Warning, Dark.
+- Ukuran: XS 28px, Small 32px, Medium 38px, Large 44px, XL 52px.
+- Ikon selalu di kiri teks, jarak 6px, `stroke-width: 2.5`.
+- Hover: `translateY(-1px)` + shadow. Active: `translateY(0)`.
+
+**Input:**
+- Tinggi: 40px, radius: 6px, border: `1.5px solid #CBD5E1`.
+- Fokus: border `#1D4ED8` + glow `box-shadow: 0 0 0 3px rgba(37,99,235,.12)`.
+- Label wajib: tanda `*` merah di kanan label (bukan di placeholder).
+- Error: di bawah input, warna `#DC2626`, border merah, pesan spesifik.
+
+**Badge & Status Pill:**
+- Bentuk pill (radius 9999px), dot bulat + teks Title Case.
+- Satu warna = satu makna status. Jangan buat warna baru.
+- Jangan UPPERCASE, jangan gradient, jangan sudut kotak.
+
+**Tabel Data:**
+- Header: bg `#F8FAFC`, teks `UPPERCASE` 11.5px, `letter-spacing: 0.4px`, border bawah 2px.
+- Zebra striping: ganjil putih, genap `#F8FAFC`. Hover bg `#F8FAFC`.
+- ID/referensi: font monospace JetBrains Mono, warna biru.
+- Kolom aksi: paling kanan, tombol XS.
+- Pagination: info `"Menampilkan X sampai Y dari Z data"` kiri, navigasi kanan.
+- Filter & pencarian: di atas tabel, sejajar horizontal.
+
+**Alert:**
+- Varian: Info (biru), Success (hijau), Warning (oranye), Error (merah).
+- Wajib: judul jelas + deskripsi actionable.
+- Posisi: paling atas konten, sebelum form/tabel.
+- Maks 2 alert sekaligus.
+
+**Loading & Empty State:**
+- Loading: `"Memuat Data... Sedang mengambil data dari server. Mohon tunggu sebentar."`
+- Empty: `"Tidak Ada Data — Belum ada yang sesuai filter."` + tombol `"Atur Ulang Filter"`.
 
 ## Stack
 
