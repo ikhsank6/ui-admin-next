@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
+  Filter,
   LayoutGrid,
   LayoutList,
   Loader2,
@@ -80,6 +81,8 @@ interface DataTableProps<T> {
   searchValue?: string;
   onRefresh?: () => void;
   headerAction?: React.ReactNode;
+  onFilterOpen?: () => void;
+  filterCount?: number;
   // Messages
   emptyMessage?: string;
   loadingMessage?: string;
@@ -112,6 +115,8 @@ export function DataTable<T>({
   searchValue = "",
   onRefresh,
   headerAction,
+  onFilterOpen,
+  filterCount = 0,
   emptyMessage = "Tidak ada data.",
   loadingMessage = "Memuat data...",
   isError = false,
@@ -166,7 +171,7 @@ export function DataTable<T>({
   // ── Toolbar ──────────────────────────────────────────────────────────────────
   const toolbar = (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b px-4 py-3">
-      {/* Left: search */}
+      {/* Left: search + filter */}
       <div className="flex items-center gap-2 w-full sm:flex-1">
         {onSearch && (
           <div className="relative flex-1 sm:max-w-xs">
@@ -190,24 +195,31 @@ export function DataTable<T>({
             )}
           </div>
         )}
+        {onFilterOpen && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onFilterOpen}
+            className={cn(
+              "h-9 gap-1.5 shrink-0",
+              filterCount > 0 && "border-primary/50 bg-primary/5 text-primary hover:bg-primary/10"
+            )}
+          >
+            <Filter className="h-4 w-4" />
+            <span>Filter</span>
+            {filterCount > 0 && (
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {filterCount}
+              </span>
+            )}
+          </Button>
+        )}
       </div>
 
       {/* Right: headerAction + refresh + column visibility + view toggle */}
       <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
         {headerAction}
-
-        {onRefresh && (
-          <ActionButton
-            variant="outline"
-            size="sm"
-            className="h-9 gap-1.5"
-            onClick={onRefresh}
-            loading={loading}
-            icon={<RefreshCw className="h-4 w-4" />}
-            title="Muat Ulang"
-            tooltip="Muat Ulang"
-          />
-        )}
 
         {showColumnVisibility && (
           <Popover>

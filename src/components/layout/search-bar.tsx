@@ -39,13 +39,14 @@ export function SearchBar() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center justify-between w-64 h-9 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-left text-sm text-white/40 hover:text-white/60 focus:outline-hidden"
+        className="flex items-center justify-center lg:justify-between w-9 lg:w-64 h-9 p-0 lg:px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-left text-sm text-white/40 hover:text-white/60 focus:outline-hidden shrink-0"
+        aria-label="Cari menu"
       >
         <div className="flex items-center gap-2">
-          <Search className="h-4 w-4" />
-          <span>Cari...</span>
+          <Search className="h-4 w-4 shrink-0" />
+          <span className="hidden lg:inline">Cari...</span>
         </div>
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded-xs border border-white/15 bg-white/5 px-1.5 font-mono text-[10px] font-medium text-white/50">
+        <kbd className="hidden lg:inline-flex pointer-events-none h-5 select-none items-center gap-0.5 rounded-xs border border-white/15 bg-white/5 px-1.5 font-mono text-[10px] font-medium text-white/50">
           <span className="text-[9px]">Ctrl+</span>K
         </kbd>
       </button>

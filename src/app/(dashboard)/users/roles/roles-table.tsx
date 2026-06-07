@@ -82,9 +82,11 @@ const COLUMNS = [
 type RolesTableProps = {
   onEdit?: (role: Role) => void;
   filters?: TableFilters;
+  onFilterOpen?: () => void;
+  filterCount?: number;
 };
 
-export function RolesTable({ onEdit, filters }: RolesTableProps) {
+export function RolesTable({ onEdit, filters, onFilterOpen, filterCount = 0 }: RolesTableProps) {
   const table = useTable<Role>(TABLE_KEY, fetchRoles);
 
   useEffect(() => {
@@ -107,6 +109,8 @@ export function RolesTable({ onEdit, filters }: RolesTableProps) {
       searchValue={String(table.filters.search ?? "")}
       onSearch={(v) => table.setFilters({ ...filters, search: v })}
       onRefresh={table.refresh}
+      onFilterOpen={onFilterOpen}
+      filterCount={filterCount}
       showPagination
       currentPage={table.page}
       totalPages={table.totalPages}
