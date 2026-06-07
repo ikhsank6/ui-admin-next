@@ -75,7 +75,17 @@ export function findActiveSectionIndex(pathname: string): number {
 }
 
 export function isItemActive(pathname: string, href: string): boolean {
-  return pathname === href || pathname.startsWith(`${href}/`);
+  if (pathname === href) return true;
+  if (pathname.startsWith(`${href}/`)) {
+    // Saring jika ada nav item lain yang lebih spesifik (href lebih panjang) yang juga cocok dengan pathname
+    const hasMoreSpecificMatch = allNavItems.some((item) => {
+      if (item.href === href) return false;
+      const isMatch = pathname === item.href || pathname.startsWith(`${item.href}/`);
+      return isMatch && item.href.length > href.length;
+    });
+    return !hasMoreSpecificMatch;
+  }
+  return false;
 }
 
 // Cari NavItem berdasarkan href — untuk sinkronisasi ikon breadcrumb dengan sidebar.

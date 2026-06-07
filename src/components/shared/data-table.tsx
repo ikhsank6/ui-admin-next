@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
+  Filter,
   LayoutGrid,
   LayoutList,
   Loader2,
@@ -81,6 +82,8 @@ interface DataTableProps<T> {
   onRefresh?: () => void;
   headerAction?: React.ReactNode;
   filters?: React.ReactNode; // slot filter (dropdown dll) di kiri toolbar
+  onFilterOpen?: () => void; // callback untuk membuka filter modal
+  filterCount?: number; // jumlah filter aktif (untuk badge)
   // Messages
   emptyMessage?: string;
   loadingMessage?: string;
@@ -115,6 +118,8 @@ export function DataTable<T>({
   onRefresh,
   headerAction,
   filters,
+  onFilterOpen,
+  filterCount = 0,
   emptyMessage = "Tidak ada data.",
   loadingMessage = "Memuat data...",
   isError = false,
@@ -171,8 +176,28 @@ export function DataTable<T>({
   // ── Toolbar ──────────────────────────────────────────────────────────────────
   const toolbar = (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b px-4 py-3">
-      {/* Left: filters + search */}
+      {/* Left: filter button + filters slot + search */}
       <div className="flex flex-wrap items-center gap-2 w-full sm:flex-1">
+        {onFilterOpen && (
+          <button
+            type="button"
+            onClick={onFilterOpen}
+            className={cn(
+              "relative inline-flex items-center gap-1.5 h-9 px-3 rounded-md border text-sm font-medium transition-all",
+              filterCount > 0
+                ? "border-primary/50 bg-primary/5 text-primary hover:bg-primary/10"
+                : "border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
+            )}
+          >
+            <Filter className="h-3.5 w-3.5" />
+            Filter
+            {filterCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {filterCount}
+              </span>
+            )}
+          </button>
+        )}
         {filters}
         {onSearch && (
           <div className="relative flex-1 sm:max-w-xs">
