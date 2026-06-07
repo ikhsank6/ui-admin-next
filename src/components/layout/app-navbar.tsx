@@ -1,16 +1,16 @@
 "use client";
 
-import { Menu, Search, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useSidebar } from "@/hooks/use-sidebar";
-import { bottomNav, type NavItem, navGroups, primaryNav } from "@/utils/nav-config";
+import { bottomNav, navGroups, primaryNav } from "@/utils/nav-config";
 import { NavGroupSection, NavItemRow } from "./nav-items";
 import { NotificationMenu } from "./notification-menu";
+import { SearchBar } from "./search-bar";
 import { UserMenu } from "./user-menu";
 
 // ─── AppNavbar ────────────────────────────────────────────────────────────────
@@ -37,18 +37,10 @@ function useDateNow() {
 
 export function AppNavbar() {
   const { toggle, mobileOpen, setMobileOpen } = useSidebar();
-  const [query, setQuery] = useState("");
   const dateLabel = useDateNow();
-
-  const allItems: NavItem[] = [...primaryNav, ...navGroups.flatMap((g) => g.items), ...bottomNav];
-
-  const filtered = query.trim()
-    ? allItems.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()))
-    : null;
 
   function handleClose() {
     setMobileOpen(false);
-    setQuery("");
   }
 
   return (
@@ -76,17 +68,48 @@ export function AppNavbar() {
           <Menu className="h-5 w-5" />
         </Button>
 
-        {/* Logo */}
+        {/* Logo PERONHUB */}
         <Link
           href="/dashboard"
-          className="flex items-center gap-1.5 shrink-0 font-bold text-lg tracking-tight text-white"
-          aria-label="AdminPanel beranda"
+          className="flex items-center gap-2.5 shrink-0 text-white group"
+          aria-label="Portal DJKA — Beranda"
         >
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-primary text-primary-foreground text-xs font-bold">
-            AP
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 dark:bg-black/20 dark:border-white/5 p-1">
+            <svg
+              className="h-7 w-7 shrink-0 transition-transform duration-300 group-hover:scale-105"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Left/top chevron: white */}
+              <path
+                d="M6 16L16 6L21 11L11 21H6V16Z"
+                fill="#FFFFFF"
+              />
+              {/* Right/bottom chevron: light grey */}
+              <path
+                d="M26 16L16 26L11 21L21 11H26V16Z"
+                fill="#94A3B8"
+              />
+            </svg>
+          </div>
+          <span className="hidden lg:flex flex-col leading-none">
+            <span className="font-extrabold text-[15px] tracking-tight text-white">
+              PERONHUB
+            </span>
+            <span className="text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
+              Portal Pelayanan Perkeretaapian Online
+            </span>
+            <span className="text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
+              Direktorat Jenderal Perkeretaapian
+            </span>
           </span>
-          <span className="hidden sm:inline">AdminPanel</span>
         </Link>
+
+        {/* Search Bar */}
+        <div className="hidden md:block ml-4">
+          <SearchBar />
+        </div>
 
         {/* Date */}
         <div className="flex-1 flex justify-end pr-3">
@@ -105,61 +128,38 @@ export function AppNavbar() {
 
           {/* Header */}
           <div className="flex items-center justify-between h-14 px-4 border-b border-sidebar-border shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-primary text-primary-foreground text-xs font-bold">
-                AP
-              </span>
-              <span className="font-bold text-lg text-sidebar-foreground">AdminPanel</span>
-            </div>
-          </div>
-
-          {/* Search */}
-          <div className="px-3 pt-3 pb-1 shrink-0">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Cari menu..."
-                className="pl-8 pr-7 h-8 text-sm bg-sidebar-accent/30 border-sidebar-border focus-visible:ring-1"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-white/5 border border-white/10 p-1">
+                <svg
+                  className="h-6 w-6 shrink-0"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
+                  <path d="M6 16L16 6L21 11L11 21H6V16Z" fill="#FFFFFF" />
+                  <path d="M26 16L16 26L11 21L21 11H26V16Z" fill="#94A3B8" />
+                </svg>
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-extrabold text-sm tracking-tight text-white">PERONHUB</span>
+                <span className="text-[7.5px] font-medium tracking-[0.1px] text-white/50 uppercase mt-0.5">
+                  Direktorat Jenderal Perkeretaapian
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Nav */}
           <nav className="flex-1 overflow-y-auto px-3 py-2">
-            {filtered ? (
-              filtered.length > 0 ? (
-                <div className="flex flex-col gap-0.5">
-                  {filtered.map((item) => (
-                    <NavItemRow key={item.href} item={item} onClose={handleClose} />
-                  ))}
-                </div>
-              ) : (
-                <p className="px-3 py-6 text-xs text-muted-foreground text-center">
-                  Tidak ditemukan
-                </p>
-              )
-            ) : (
-              <div className="flex flex-col gap-1">
-                {primaryNav.map((item) => (
-                  <NavItemRow key={item.href} item={item} onClose={handleClose} />
-                ))}
-                <Separator className="my-2 bg-sidebar-border" />
-                {navGroups.map((group) => (
-                  <NavGroupSection key={group.title} group={group} onClose={handleClose} />
-                ))}
-              </div>
-            )}
+            <div className="flex flex-col gap-1">
+              {primaryNav.map((item) => (
+                <NavItemRow key={item.href} item={item} onClose={handleClose} />
+              ))}
+              <Separator className="my-2 bg-sidebar-border" />
+              {navGroups.map((group) => (
+                <NavGroupSection key={group.title} group={group} onClose={handleClose} />
+              ))}
+            </div>
           </nav>
 
           {/* Bottom nav */}
