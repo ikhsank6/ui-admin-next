@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { MobileSidebarNav } from "./app-sidebar";
 import { NotificationMenu } from "./notification-menu";
+import { SearchBar } from "./search-bar";
 import { UserMenu } from "./user-menu";
 
 // ─── AppNavbar ────────────────────────────────────────────────────────────────
@@ -57,19 +58,45 @@ export function AppNavbar() {
         {/* Logo PERONHUB */}
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 shrink-0 text-white"
+          className="flex items-center gap-2.5 shrink-0 text-white group"
           aria-label="Portal DJKA — Beranda"
         >
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">
-            <Gem className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="hidden sm:flex flex-col leading-none">
-            <span className="font-extrabold text-base tracking-tight">PERONHUB</span>
-            <span className="text-[9px] font-medium tracking-[0.5px] text-white/50 uppercase">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 dark:bg-black/20 dark:border-white/5 p-1">
+            <svg
+              className="h-7 w-7 shrink-0 transition-transform duration-300 group-hover:scale-105"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Left/top chevron: white */}
+              <path
+                d="M6 16L16 6L21 11L11 21H6V16Z"
+                fill="#FFFFFF"
+              />
+              {/* Right/bottom chevron: light grey */}
+              <path
+                d="M26 16L16 26L11 21L21 11H26V16Z"
+                fill="#94A3B8"
+              />
+            </svg>
+          </div>
+          <span className="hidden lg:flex flex-col leading-none">
+            <span className="font-extrabold text-[15px] tracking-tight text-white">
+              PERONHUB
+            </span>
+            <span className="text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
+              Portal Pelayanan Perkeretaapian Online
+            </span>
+            <span className="text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
               Direktorat Jenderal Perkeretaapian
             </span>
           </span>
         </Link>
+
+        {/* Search Bar */}
+        <div className="hidden md:block ml-4">
+          <SearchBar />
+        </div>
 
         {/* Date */}
         <div className="flex-1 flex justify-end pr-3">

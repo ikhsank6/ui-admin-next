@@ -388,7 +388,7 @@ export function DataTable<T>({
   const tableView = (
     <div className="overflow-x-auto">
       <Table className="dark:bg-[hsl(var(--table-bg))]">
-        <TableHeader className="bg-[#F8FAFC] dark:bg-[hsl(var(--table-bg))] border-b-2 border-border [&_tr]:border-b-0">
+        <TableHeader className="bg-[hsl(var(--table-header))] border-b border-border [&_tr]:border-b-0">
           <TableRow className="hover:bg-transparent">
             {visibleColumns.map((col) => (
               <TableHead
