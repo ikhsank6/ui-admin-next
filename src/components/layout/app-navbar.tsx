@@ -82,12 +82,9 @@ export function AppNavbar() {
           </div>
           <span className="flex flex-col leading-none">
             <span className="font-extrabold text-[15px] tracking-tight text-white">
-              PERONHUB
+              Perizinan Crossing
             </span>
-            <span className="hidden sm:block text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
-              Portal Pelayanan Perkeretaapian Online
-            </span>
-            <span className="hidden sm:block text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
+            <span className="hidden sm:block text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase mt-1">
               Direktorat Jenderal Perkeretaapian
             </span>
           </span>
