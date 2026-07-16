@@ -17,14 +17,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "AdminPanel",
-    template: "%s | AdminPanel",
+    default: "Template Admin",
+    template: "%s | Template Admin",
   },
-  description: "Template admin dashboard modern dengan Next.js dan shadcn/ui",
+  description: "UI Admin",
   metadataBase: new URL("https://template-youtube.vercel.app"),
   openGraph: {
     type: "website",
-    siteName: "AdminPanel",
+    siteName: "Template Admin",
   },
   twitter: {
     card: "summary_large_image",

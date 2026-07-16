@@ -68,11 +68,11 @@ export function AppNavbar() {
           <Menu className="h-5 w-5" />
         </Button>
 
-        {/* Logo PERONHUB */}
+        {/* Logo TEMPLATE ADMIN */}
         <Link
           href="/dashboard"
           className="flex items-center gap-2.5 shrink-0 text-white group"
-          aria-label="Portal DJKA — Beranda"
+          aria-label="Template Admin — Beranda"
         >
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 dark:bg-black/20 dark:border-white/5 p-1">
             <svg
@@ -80,28 +80,21 @@ export function AppNavbar() {
               viewBox="0 0 32 32"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Logo Template Admin"
             >
               {/* Left/top chevron: white */}
-              <path
-                d="M6 16L16 6L21 11L11 21H6V16Z"
-                fill="#FFFFFF"
-              />
+              <path d="M6 16L16 6L21 11L11 21H6V16Z" fill="#FFFFFF" />
               {/* Right/bottom chevron: light grey */}
-              <path
-                d="M26 16L16 26L11 21L21 11H26V16Z"
-                fill="#94A3B8"
-              />
+              <path d="M26 16L16 26L11 21L21 11H26V16Z" fill="#94A3B8" />
             </svg>
           </div>
           <span className="flex flex-col leading-none">
             <span className="font-extrabold text-[15px] tracking-tight text-white">
-              PERONHUB
+              TEMPLATE ADMIN
             </span>
             <span className="hidden sm:block text-[8px] font-bold tracking-[0.4px] text-white/80 dark:text-gray-300 uppercase -mt-0.5">
-              Portal Pelayanan Perkeretaapian Online
-            </span>
-            <span className="hidden sm:block text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase">
-              Direktorat Jenderal Perkeretaapian
+              UI ADMIN
             </span>
           </span>
         </Link>
@@ -135,15 +128,19 @@ export function AppNavbar() {
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Logo Template Admin"
                 >
                   <path d="M6 16L16 6L21 11L11 21H6V16Z" fill="#FFFFFF" />
                   <path d="M26 16L16 26L11 21L21 11H26V16Z" fill="#94A3B8" />
                 </svg>
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-extrabold text-sm tracking-tight text-white">PERONHUB</span>
+                <span className="font-extrabold text-sm tracking-tight text-white">
+                  TEMPLATE ADMIN
+                </span>
                 <span className="text-[7.5px] font-medium tracking-[0.1px] text-white/50 uppercase mt-0.5">
-                  Direktorat Jenderal Perkeretaapian
+                  UI ADMIN
                 </span>
               </div>
             </div>

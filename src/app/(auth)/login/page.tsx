@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Moon, Sun } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const from = searchParams.get("from") ?? "/dashboard";
@@ -60,9 +60,9 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="flex items-center justify-center gap-2 mb-8">
           <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-primary text-primary-foreground font-bold text-sm">
-            AP
+            TA
           </span>
-          <span className="font-bold text-2xl tracking-tight">AdminPanel</span>
+          <span className="font-bold text-2xl tracking-tight">Template Admin</span>
         </div>
 
         <Card>
@@ -137,5 +137,13 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

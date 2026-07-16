@@ -48,9 +48,9 @@ export function UserMenu() {
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel className="gap-2 border-0 shadow-none bg-transparent hover:bg-transparent p-0 h-auto text-sm font-medium">
-                <ArrowLeft className="h-4 w-4" />
-                Batal
-              </AlertDialogCancel>
+              <ArrowLeft className="h-4 w-4" />
+              Batal
+            </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500 hover:bg-red-600 text-white"
               onClick={handleLogout}

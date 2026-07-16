@@ -60,7 +60,7 @@ export function SearchBar() {
         <CommandInput placeholder="Ketik nama menu untuk mencari..." />
         <CommandList>
           <CommandEmpty>Menu tidak ditemukan.</CommandEmpty>
-          
+
           <CommandGroup heading="Utama">
             {primaryNav.map((item) => (
               <CommandItem

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 const siteConfig = {
-  name: "AdminPanel",
-  description: "Template admin dashboard modern dengan Next.js dan shadcn/ui",
+  name: "Template Admin",
+  description: "UI Admin",
   url: "https://template-youtube.vercel.app",
   ogImage: "/og-image.png",
 };

@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { cn } from "@/utils/cn";
-import { type NavItem, navGroups, primaryNav } from "@/utils/nav-config";
+import { navGroups, primaryNav } from "@/utils/nav-config";
 import { NavGroupSection, NavItemRow } from "./nav-items";
 
 export function AppSidebar() {
