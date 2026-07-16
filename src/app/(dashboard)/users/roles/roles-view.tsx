@@ -4,7 +4,7 @@ import { LayoutDashboard, Settings, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AddButton } from "@/components/shared/button/add-button";
 import { ContentCard } from "@/components/shared/content-card";
-import { FilterModal, type ActiveFilterPill } from "@/components/shared/filter-modal";
+import { type ActiveFilterPill, FilterModal } from "@/components/shared/filter-modal";
 import {
   Select,
   SelectContent,
@@ -136,7 +136,8 @@ export function RolesView() {
   const activePills = useMemo<ActiveFilterPill[]>(() => {
     const pills: ActiveFilterPill[] = [];
     if (applied.type !== "Semua") pills.push({ label: "Tipe", value: applied.type });
-    if (applied.minUsers !== "") pills.push({ label: "Min. Pengguna", value: `≥${applied.minUsers}` });
+    if (applied.minUsers !== "")
+      pills.push({ label: "Min. Pengguna", value: `≥${applied.minUsers}` });
     if (applied.permission !== "") pills.push({ label: "Izin", value: applied.permission });
     return pills;
   }, [applied]);
@@ -170,9 +171,7 @@ export function RolesView() {
         hasActiveFilters={hasActiveFilters}
         hasPendingChanges={hasPendingChanges}
         isPendingDefault={
-          pending.type === "Semua" &&
-          pending.minUsers === "" &&
-          pending.permission === ""
+          pending.type === "Semua" && pending.minUsers === "" && pending.permission === ""
         }
       >
         {/* Tipe Role */}

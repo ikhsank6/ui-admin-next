@@ -1,6 +1,9 @@
-# AdminPanel — Template Dashboard
+# Template Admin UI
 
 Template admin dashboard modern berbasis Next.js dengan UI yang bersih, responsif, dan mendukung dark mode.
+
+![Admin Dashboard Preview](public/dashboard.png)
+![Daftar User Preview](public/users.png)
 
 ---
 
@@ -45,7 +48,7 @@ Template admin dashboard modern berbasis Next.js dengan UI yang bersih, responsi
 | Teknologi | Versi | Keterangan |
 |---|---|---|
 | [Biome](https://biomejs.dev) | 2 | Linter + formatter (pengganti ESLint + Prettier) |
-| [pnpm](https://pnpm.io) | — | Package manager |
+| [Bun](https://bun.sh) | — | Package manager & runtime |
 
 ---
 
@@ -71,22 +74,21 @@ src/
 ## Cara Menjalankan
 
 ### Prasyarat
-- [Node.js](https://nodejs.org) >= 18
-- [pnpm](https://pnpm.io) >= 8
+- [Bun](https://bun.sh) >= 1.0
 
 ```bash
-# Install pnpm jika belum ada
-npm install -g pnpm
+# Install Bun jika belum ada
+curl -fsSL https://bun.sh/install | bash
 ```
 
 ### Development
 
 ```bash
 # 1. Install dependencies
-pnpm install
+bun install
 
 # 2. Jalankan dev server
-pnpm dev
+bun run dev
 ```
 
 Buka [http://localhost:3000](http://localhost:3000) di browser.
@@ -95,23 +97,23 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ```bash
 # Build
-pnpm build
+bun run build
 
 # Jalankan production server
-pnpm start
+bun run start
 ```
 
 ### Perintah Lain
 
 ```bash
 # Cek linting
-pnpm lint
+bun run lint
 
 # Format kode
-pnpm format
+bun run format
 
 # Type check
-pnpm typecheck
+bun run typecheck
 ```
 
 ---

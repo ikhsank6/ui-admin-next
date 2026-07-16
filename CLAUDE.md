@@ -524,19 +524,19 @@ Gunakan via Tailwind arbitrary value: `bg-[hsl(var(--navbar))]`.
 
 ## Package Manager
 
-Proyek ini menggunakan **pnpm**.
+Proyek ini menggunakan **Bun**.
 
 ```bash
 # Install dependency
-pnpm install
+bun install
 
 # Tambah komponen shadcn/ui yang belum ada
-pnpm dlx shadcn@latest add <nama-komponen>
+bunx shadcn@latest add <nama-komponen>
 
 # Contoh
-pnpm dlx shadcn@latest add collapsible
-pnpm dlx shadcn@latest add popover
-pnpm dlx shadcn@latest add tooltip
+bunx shadcn@latest add collapsible
+bunx shadcn@latest add popover
+bunx shadcn@latest add tooltip
 ```
 
 Sebelum menulis komponen UI baru, cek dulu apakah sudah tersedia di `src/components/ui/`. Jika belum, install via perintah di atas.

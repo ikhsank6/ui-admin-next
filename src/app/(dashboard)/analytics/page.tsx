@@ -23,11 +23,7 @@ const topPages = [
 export default function AnalyticsPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
-      <PageBreadcrumb
-        items={[
-          { label: "Analitik", href: "/analytics" },
-        ]}
-      />
+      <PageBreadcrumb items={[{ label: "Analitik", href: "/analytics" }]} />
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Analitik</h1>
         <p className="text-sm text-muted-foreground mt-1">Statistik dan tren performa platform</p>

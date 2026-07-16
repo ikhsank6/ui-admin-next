@@ -63,7 +63,7 @@ function LoginContent() {
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground">
               <Gem className="h-5 w-5" aria-hidden="true" />
             </span>
-            <span className="font-extrabold text-2xl tracking-tight">PERONHUB</span>
+            <span className="font-extrabold text-2xl tracking-tight">Template Admin UI</span>
           </div>
           <p className="text-[11px] font-medium uppercase tracking-[0.8px] text-muted-foreground">
             Direktorat Jenderal Perkeretaapian

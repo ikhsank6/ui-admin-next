@@ -1,6 +1,6 @@
 "use client";
 
-import { Gem, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -59,7 +59,7 @@ export function AppNavbar() {
         <Link
           href="/dashboard"
           className="flex items-center gap-2.5 shrink-0 text-white group"
-          aria-label="Portal DJKA — Beranda"
+          aria-label="Template Admin UI — Beranda"
         >
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 dark:bg-black/20 dark:border-white/5 p-1">
             <svg
@@ -67,25 +67,21 @@ export function AppNavbar() {
               viewBox="0 0 32 32"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Logo Template Admin UI"
             >
               {/* Left/top chevron: white */}
-              <path
-                d="M6 16L16 6L21 11L11 21H6V16Z"
-                fill="#FFFFFF"
-              />
+              <path d="M6 16L16 6L21 11L11 21H6V16Z" fill="#FFFFFF" />
               {/* Right/bottom chevron: light grey */}
-              <path
-                d="M26 16L16 26L11 21L21 11H26V16Z"
-                fill="#94A3B8"
-              />
+              <path d="M26 16L16 26L11 21L21 11H26V16Z" fill="#94A3B8" />
             </svg>
           </div>
           <span className="flex flex-col leading-none">
             <span className="font-extrabold text-[15px] tracking-tight text-white">
-              Perizinan Crossing
+              Template Admin UI
             </span>
             <span className="hidden sm:block text-[8px] font-medium tracking-[0.2px] text-white/50 dark:text-gray-400 uppercase mt-1">
-              Direktorat Jenderal Perkeretaapian
+              Description Admin UI
             </span>
           </span>
         </Link>

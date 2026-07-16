@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 export default function UsersPage() {
   return (
     <div className="flex flex-col gap-4 p-6">
-      <PageBreadcrumb
-        items={[
-          { label: "Daftar User", href: "/users" },
-        ]}
-      />
+      <PageBreadcrumb items={[{ label: "Daftar User", href: "/users" }]} />
       <UsersView />
     </div>
   );

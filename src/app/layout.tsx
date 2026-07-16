@@ -19,15 +19,14 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Portal DJKA",
-    template: "%s | Portal DJKA",
+    default: "Template Admin UI",
+    template: "%s | Template Admin UI",
   },
-  description:
-    "Portal Pelayanan Perkeretaapian Online — Direktorat Jenderal Perkeretaapian, Kementerian Perhubungan RI",
+  description: "Template Admin UI",
   metadataBase: new URL("https://portal.djka.kemenhub.go.id"),
   openGraph: {
     type: "website",
-    siteName: "Portal DJKA",
+    siteName: "Template Admin UI",
   },
   twitter: {
     card: "summary_large_image",
