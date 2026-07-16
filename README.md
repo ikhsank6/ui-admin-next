@@ -3,6 +3,7 @@
 Template admin dashboard modern berbasis Next.js dengan UI yang bersih, responsif, dan mendukung dark mode.
 
 ![Admin Dashboard Preview](public/dashboard.png)
+![Daftar User Preview](public/users.png)
 
 ---
 
