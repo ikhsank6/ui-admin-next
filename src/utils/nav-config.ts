@@ -59,3 +59,14 @@ export const categoryChips = [
   "Verifikasi Pending",
   "Ditangguhkan",
 ];
+
+export function getNavItem(key: string): NavItem | undefined {
+  const allNavItems = [...primaryNav, ...navGroups.flatMap((g) => g.items), ...bottomNav];
+  return allNavItems.find(
+    (item) =>
+      item.href === key ||
+      item.title.toLowerCase() === key.toLowerCase() ||
+      key.toLowerCase().includes(item.title.toLowerCase()) ||
+      item.title.toLowerCase().includes(key.toLowerCase())
+  );
+}

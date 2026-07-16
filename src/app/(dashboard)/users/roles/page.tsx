@@ -10,13 +10,7 @@ export const metadata: Metadata = {
 export default function RolesPage() {
   return (
     <div className="flex flex-col gap-4 p-6">
-      <PageBreadcrumb
-        items={[
-          { label: "Beranda", href: "/dashboard" },
-          { label: "Pengguna", href: "/users" },
-          { label: "Roles" },
-        ]}
-      />
+      <PageBreadcrumb items={[{ label: "Roles & Hak Akses", href: "/users/roles" }]} />
       <RolesView />
     </div>
   );

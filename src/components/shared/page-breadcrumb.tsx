@@ -2,8 +2,10 @@
 
 import { motion, useAnimation } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
+import { getNavItem } from "@/utils/nav-config";
 
 export type BreadcrumbEntry = {
   label: string;
@@ -28,6 +30,7 @@ const sepVariants = {
 export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
   const ref = useRef<HTMLElement>(null);
   const controls = useAnimation();
+  const pathname = usePathname();
 
   useEffect(() => {
     const el = ref.current;
@@ -63,6 +66,13 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
       <ol className="flex flex-wrap items-center gap-1.5 text-sm break-words text-muted-foreground sm:gap-2.5">
         {items.map((crumb, index) => {
           const isLast = index === items.length - 1;
+          const navItem = crumb.href
+            ? getNavItem(crumb.href)
+            : isLast
+              ? getNavItem(pathname)
+              : getNavItem(crumb.label);
+          const Icon = index === 0 ? navItem?.icon : undefined;
+
           return (
             <React.Fragment key={crumb.label}>
               <motion.li
@@ -74,16 +84,28 @@ export function PageBreadcrumb({ items }: { items: BreadcrumbEntry[] }) {
                   <span
                     data-slot="breadcrumb-page"
                     aria-current="page"
-                    className="font-normal text-foreground"
+                    className="inline-flex items-center gap-1.5 font-semibold text-foreground"
                   >
+                    {Icon && (
+                      <Icon
+                        className="h-4 w-4 text-primary shrink-0 animate-in fade-in zoom-in duration-200"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                    )}
                     {crumb.label}
                   </span>
                 ) : (
                   <a
                     data-slot="breadcrumb-link"
                     href={crumb.href ?? "#"}
-                    className={cn("transition-colors hover:text-foreground")}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+                    )}
                   >
+                    {Icon && (
+                      <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
+                    )}
                     {crumb.label}
                   </a>
                 )}
