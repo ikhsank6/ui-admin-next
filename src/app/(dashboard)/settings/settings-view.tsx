@@ -7,8 +7,9 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { SaveButton } from "@/components/shared/button/save-button";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
-import { Button } from "@/components/ui/button";
+import { PasswordStrength, passwordSchema } from "@/components/shared/password-strength";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,9 +26,9 @@ type ProfileForm = z.infer<typeof profileSchema>;
 
 const securitySchema = z
   .object({
-    currentPassword: z.string().min(6, "Password minimal 6 karakter"),
-    newPassword: z.string().min(6, "Password minimal 6 karakter"),
-    confirmPassword: z.string().min(6, "Password minimal 6 karakter"),
+    currentPassword: z.string().min(1, "Password saat ini wajib diisi"),
+    newPassword: passwordSchema("Password baru belum memenuhi seluruh ketentuan"),
+    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
   })
   .refine((d) => d.newPassword === d.confirmPassword, {
     message: "Konfirmasi password tidak cocok",
@@ -209,6 +210,7 @@ export function SettingsView() {
                       id="name"
                       className="pl-9"
                       placeholder="Nama Anda"
+                      aria-invalid={!!profileForm.formState.errors.name}
                       {...profileForm.register("name")}
                     />
                   </div>
@@ -228,6 +230,7 @@ export function SettingsView() {
                       type="email"
                       className="pl-9"
                       placeholder="email@example.com"
+                      aria-invalid={!!profileForm.formState.errors.email}
                       {...profileForm.register("email")}
                     />
                   </div>
@@ -245,9 +248,7 @@ export function SettingsView() {
                   <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
                   Terakhir diperbarui: 28/1/2026
                 </div>
-                <Button type="submit" disabled={profileForm.formState.isSubmitting}>
-                  Simpan Perubahan
-                </Button>
+                <SaveButton label="Simpan Perubahan" loading={profileForm.formState.isSubmitting} />
               </div>
             </form>
           )}
@@ -271,6 +272,7 @@ export function SettingsView() {
                   <Label htmlFor="currentPassword">Password Saat Ini</Label>
                   <PasswordInput
                     id="currentPassword"
+                    aria-invalid={!!securityForm.formState.errors.currentPassword}
                     {...securityForm.register("currentPassword")}
                   />
                   {securityForm.formState.errors.currentPassword && (
@@ -281,17 +283,18 @@ export function SettingsView() {
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="newPassword">Password Baru</Label>
-                  <PasswordInput id="newPassword" {...securityForm.register("newPassword")} />
-                  {securityForm.formState.errors.newPassword && (
-                    <p className="text-xs text-destructive">
-                      {securityForm.formState.errors.newPassword.message}
-                    </p>
-                  )}
+                  <PasswordInput
+                    id="newPassword"
+                    aria-invalid={!!securityForm.formState.errors.newPassword}
+                    {...securityForm.register("newPassword")}
+                  />
+                  <PasswordStrength value={securityForm.watch("newPassword")} />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="confirmPassword">Konfirmasi Password Baru</Label>
                   <PasswordInput
                     id="confirmPassword"
+                    aria-invalid={!!securityForm.formState.errors.confirmPassword}
                     {...securityForm.register("confirmPassword")}
                   />
                   {securityForm.formState.errors.confirmPassword && (
@@ -304,9 +307,7 @@ export function SettingsView() {
 
               <Separator />
               <div className="flex justify-end">
-                <Button type="submit" disabled={securityForm.formState.isSubmitting}>
-                  Ubah Password
-                </Button>
+                <SaveButton label="Ubah Password" loading={securityForm.formState.isSubmitting} />
               </div>
             </form>
           )}
